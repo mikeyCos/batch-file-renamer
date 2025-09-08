@@ -1,0 +1,27 @@
+{
+  "name": "batch-file-renamer",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/mikeyCos/batch-file-renamer#readme",
+  "bugs": {
+    "url": "https://github.com/mikeyCos/batch-file-renamer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeyCos/batch-file-renamer.git"
+  },
+  "license": "ISC",
+  "author": "MikeyCos",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "foo": "ts-node -e 'import '",
+    "batch": "echo \"batching...\""
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
