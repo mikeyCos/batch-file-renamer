@@ -1,28 +1,20 @@
 import fs from "fs/promises";
+import os from "os";
+import path from "path";
 
+type GetRootDir = () => string;
 type BatchRename = (path: string) => void;
 
-const foo = () => {
-  console.group("foo running...");
-  console.groupEnd();
-  return "foo";
-};
+const getRootDir: GetRootDir = () => path.parse(process.cwd()).root;
 
-const bar = () => {
-  console.group("bar running...");
-  console.groupEnd();
-  return "bar";
-};
+const batchRename: BatchRename = async (pathString) => {
+  const isAbsPath = path.isAbsolute(pathString);
 
-const batchRename: BatchRename = async (path) => {
-  // Do I need to perform a runtime check for path?
-  if (!path)
+  if (!isAbsPath) {
     throw new Error(
-      "TypeError: batchRename requires 1 argument, but 0 arguments were passed"
+      "Provided path must be an absolute path to a directory or file"
     );
-
-  const pathStats = await fs.stat(path);
-  console.log("pathStats:", pathStats);
+  }
 };
 
 /* BRAINSTORMING
@@ -50,5 +42,7 @@ const batchRename: BatchRename = async (path) => {
  *
  * Errors:
  *
+ * Questions:
+ *  What if user passes an empty string?
  */
-export { batchRename, foo, bar };
+export { batchRename, getRootDir };

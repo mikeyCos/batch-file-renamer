@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "./src/index.ts",
   "scripts": {
-    "test": "jest --testPathPatterns=tests",
+    "test": "clear && jest --testPathPatterns=tests",
     "foo": "ts-node -e 'import { foo } from \"./src/index\"; foo()'",
     "batch": "echo \"batching...\""
   },
