@@ -1,5 +1,9 @@
 # Changelog
 ---
+### 11 SEP 2025
+- Defined `originalIsAbsolute` to store `path.isAbsolute` value when `beforeAll` runs.
+- Separated unit tests for Windows and Linux operating systems.
+---
 ### 10 SEP 2025
 - Created multiple tests when `batchRename` throws the error `Provided path must be an absolute path to a directory or file`.
 ---

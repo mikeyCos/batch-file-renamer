@@ -5,9 +5,13 @@ import path from "path";
 type GetRootDir = () => string;
 type BatchRename = (path: string) => void;
 
-const getRootDir: GetRootDir = () => path.parse(process.cwd()).root;
+const getRootDir: GetRootDir = () => {
+  // return path.parse(process.cwd()).root;
+  return os.homedir();
+};
 
 const batchRename: BatchRename = async (pathString) => {
+  console.log("pathString:", pathString);
   const isAbsPath = path.isAbsolute(pathString);
 
   if (!isAbsPath) {
