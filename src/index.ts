@@ -2,51 +2,33 @@ import fs from "fs/promises";
 import os from "os";
 import path from "path";
 
-type GetRootDir = () => string;
 type BatchRename = (path: string) => void;
 
-const getRootDir: GetRootDir = () => {
-  // return path.parse(process.cwd()).root;
-  return os.homedir();
+// Opens system file explorer
+const openFileExplorer = () => {
+  const isWsl = process.env.WSL_DISTRO_NAME !== undefined;
+  console.log(isWsl);
+
+  return isWsl;
 };
 
 const batchRename: BatchRename = async (pathString) => {
   console.log("pathString:", pathString);
-  const isAbsPath = path.isAbsolute(pathString);
+};
 
-  if (!isAbsPath) {
-    throw new Error(
-      "Provided path must be an absolute path to a directory or file"
-    );
-  }
+const batchRenameCLI: BatchRename = async (pathString) => {
+  const files = await fs.readdir(pathString);
+  console.log("files:", files);
+  const content = await fs.opendir(pathString);
+  console.log("content:", content);
 };
 
 /* BRAINSTORMING
+ * Renames files based on directory
  *
- * Process
- *  User calls batchRename(<path>, <characters to omit>, <file extensions>)
- *  Validate path parameter is not empty
- *  Validate the path exists
- *  If <characters to omit> and <file extensions> are empty, resort to default options
- *  Read path and loop through files
- *  For each item, rename the files
- *
- * Return
- *  Complete message
- *
- * Inputs
- *  Wait for user confirmation for all inputs
- *  Path [string][required]
- *  Characters to omit [string][optional]
- *    Default
- *      Omits invalid alpha and numeric characters
- *      Dashes and underscores allowed
- *      Exclude file extension
- *  File extension(s) [string][optional]
- *
- * Errors:
- *
- * Questions:
- *  What if user passes an empty string?
+ * 1. Determine operating system
+ *  Do I need to determine if OS is running in WSL?
+ * 2. User selects a folder they want to rename files
+ *  What if user selects files?
  */
-export { batchRename, getRootDir };
+export { batchRename, batchRenameCLI, openFileExplorer };

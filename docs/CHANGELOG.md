@@ -1,5 +1,10 @@
 # Changelog
 ---
+### 16 SEP 2025
+- The `setupEnv` module will run once per test and checks if `process.env.WSL_WINDOWS_DIR` is defined.
+- Created `.test.env` and `setupEnv` modules in `tests` subdirectory.
+- Installed `dotenv` package.
+---
 ### 11 SEP 2025
 - Defined `originalIsAbsolute` to store `path.isAbsolute` value when `beforeAll` runs.
 - Separated unit tests for Windows and Linux operating systems.

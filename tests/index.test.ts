@@ -1,5 +1,7 @@
-import { batchRename, getRootDir } from "../src/index";
+import { batchRename, batchRenameCLI } from "../src/index";
 import path from "path";
+
+const wslDir = process.env.WSL_WINDOWS_DIR;
 const dir = __dirname;
 const filePath = __filename;
 
@@ -21,65 +23,52 @@ describe("index.ts", () => {
   });
 });
 
-describe("getRoodDir", () => {
-  test.skip(`getRoodDir returns "/repos"`, () => {
-    expect(getRootDir()).toBe("/repos");
+describe("linux", () => {
+  describe.skip("openFilesExplorer", () => {});
+
+  describe.skip("batchRename", () => {
+    // About testing promise rejects with Jest
+    // https://jestjs.io/docs/expect#rejects
+  });
+
+  describe("batchRenameCLI", () => {
+    const invalidFileDirErr = "ENOENT: no such file or directory, scandir";
+    test(`batchRenameCLI("foo") throws error`, async () => {
+      await expect(batchRenameCLI("foo")).rejects.toThrow(
+        `${invalidFileDirErr} 'foo'`
+      );
+    });
+
+    test(`batchRenameCLI("/foo") throws error`, async () => {
+      await expect(batchRenameCLI("/foo")).rejects.toThrow(
+        `${invalidFileDirErr} '/foo'`
+      );
+    });
+
+    test(`batchRenameCLI("/mock-files") throws error`, async () => {
+      await expect(batchRenameCLI("/mock-files")).rejects.toThrow(
+        `${invalidFileDirErr} '/mock-files'`
+      );
+    });
+
+    test(`batchRenameCLI(${parentDir}) resolves to be undefined`, async () => {
+      await expect(batchRenameCLI(parentDir)).resolves.toBeUndefined();
+    });
+
+    test(`batchRenameCLI("${parentDir}/mock-files") resolves to be undefined`, async () => {
+      await expect(
+        batchRenameCLI(`${parentDir}/mock-files`)
+      ).resolves.toBeUndefined();
+    });
   });
 });
 
-describe("batchRename", () => {
-  // About testing promise rejects with Jest
-  // https://jestjs.io/docs/expect#rejects
-  const absPathErr =
-    "Provided path must be an absolute path to a directory or file";
-
-  describe("linux", () => {
-    test(`Empty string throws error "${absPathErr}"`, async () => {
-      await expect(batchRename("")).rejects.toThrow(absPathErr);
-    });
-
-    test(`String "076123" throws error "${absPathErr}"`, async () => {
-      await expect(batchRename("076123")).rejects.toThrow(absPathErr);
-    });
-
-    test(`String "${parentDir}" throws error "${absPathErr}"`, async () => {
-      await expect(batchRename(parentDir)).rejects.toThrow(absPathErr);
-    });
-
-    test(`String "${fileName}" throws error "${absPathErr}"`, async () => {
-      await expect(batchRename(fileName)).rejects.toThrow(absPathErr);
-    });
-
-    test(`String "documents/file.txt" resolves`, async () => {
-      await expect(batchRename("documents/file.txt")).rejects.toThrow(
-        absPathErr
-      );
-    });
-
-    test(`String "../documents/file.txt" resolves`, async () => {
-      await expect(batchRename("../documents/file.txt")).rejects.toThrow(
-        absPathErr
-      );
-    });
-
-    // Do I still need to test if the pathString is valid and the asynchronous function has no return value?
-    test(`String "/documents/file.txt" resolves`, async () => {
-      await expect(batchRename("/documents/file.txt")).resolves.toBeUndefined();
-    });
+describe("windows", () => {
+  test(`batchRenameCLI("${wslDir}") resolves to be undefined`, async () => {
+    await expect(batchRenameCLI(wslDir)).resolves.toBeUndefined();
   });
 
-  describe("windows", () => {
-    let originalIsAbsolute = path.isAbsolute;
-    beforeAll(() => {
-      path.isAbsolute = path.win32.isAbsolute;
-    });
-
-    afterAll(() => {
-      path.isAbsolute = originalIsAbsolute;
-    });
-
-    test(`String "C:\\foo\\.." resolves`, async () => {
-      await expect(batchRename("D:\\foo\\..")).resolves.toBeUndefined();
-    });
+  test(`batchRenameCLI("${wslDir}/Desktop") resolves to be undefined`, async () => {
+    await expect(batchRenameCLI(`${wslDir}/Desktop`)).resolves.toBeUndefined();
   });
 });
