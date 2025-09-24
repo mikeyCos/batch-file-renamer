@@ -4,6 +4,7 @@ import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "./.test.env") });
 
 const wslDir = process.env.WSL_WINDOWS_DIR;
+const windowsDir = process.env.WINDOWS_DIR;
 
 // How can I dynamically get the user's home root directory
 // Linux: /home/<username>
@@ -12,4 +13,8 @@ const wslDir = process.env.WSL_WINDOWS_DIR;
 
 if (typeof wslDir !== "string" || wslDir.trim() === "") {
   throw new Error('Environment variable "WSL_WINDOWS_DIR" not defined');
+}
+
+if (typeof windowsDir !== "string" || windowsDir.trim() === "") {
+  throw new Error('Environment variable "WINDOWS_DIR" not defined');
 }

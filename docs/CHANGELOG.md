@@ -1,5 +1,10 @@
 # Changelog
 ---
+### 23 SEP 2025
+- Created `validatePath.test` suite module.
+- The function `validatePath` returns a boolean from `RegExp.prototype.test()`.
+- Defined Windows and Linux path patterns for `validatePath` function.
+---
 ### 18 SEP 2025
 - Defined `mockFsPromises` variable with the value `fs as jest.Mocked<typeof fs>`, which allows `readFile.mockResolvedValue` to be called.
 - Mocked the `fs/promises` module.
